@@ -1,0 +1,22 @@
+body {
+  background-color: white;
+}
+
+h1 {
+  text-align: center;
+}
+
+#canvas {
+  height: 500px;
+  width: 800px;
+  border: 1px solid black;
+  display: block;
+  margin: 0 auto;
+}
+
+/*@media(max-width: 1200px) {
+  #canvas {
+    width: 90%;
+    height: auto;
+  }
+}*/
