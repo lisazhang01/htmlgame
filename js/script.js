@@ -1,3 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-  // init();
+  init();
 });
+
+// With the falling rubbish object
+    // collition phase
+
+    // delete phase

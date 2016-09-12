@@ -2,7 +2,6 @@ $(document).ready(function(){
 
   // get a refrence to the canvas and its context
   var canvas = document.getElementById("canvas");
-
   var ctx = canvas.getContext("2d");
 
   // newly spawned rubbishAll start at top of page
@@ -25,8 +24,8 @@ $(document).ready(function(){
 
   var canvasWidth  = 800;
   var canvasHeight = 500;
-
   var canvasGutter = 10;
+
   var rubbishHeight = 10;
   var rubbishWidth  = 12;
 
@@ -93,9 +92,7 @@ $(document).ready(function(){
       }
     }
 
-    // collition phase
 
-    // delete phase
 
 });
 // End doc ready function
