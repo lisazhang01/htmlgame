@@ -1,21 +1,31 @@
-// $(document).ready(function(){
+var Bin = function (opt) {
+  var height = opt.height;
+  var width  = opt.width;
+  var x      = opt.x;
+  var y      = opt.y;
+  var binImg = new Image();
+  binImg.src = "assets/bin-green-full.png";
 
-// //Bin properties
-// function bin {
-//   this.height = 30;
-//   this.width = 30;
-//   this.x = canvas.width / 2 - this.width / 2;
-//   this.y = canvas.height - this.height;
-//   this.type = block_img;
-// }
 
-// // Generator of bins
-// function generateBin() {
-//   var block_img = new Image(bin.width, bin.height);
-//   block_img.src = "assets/bin-green-full.png";
+  //draw the bin at location
+  this.render = function (ctx) {
+    if (keyRight) {
+      x += binMovement;
+    } else if (keyLeft) {
+      x -= binMovement;
+    }
+    if (x <= 0) {
+      x = 0;
+    }
+    if ((x + width) >= canvasWidth) {
+      x = canvasWidth - width;
+    }
+    ctx.drawImage(binImg, x, y, width, height);
+    console.log("draw bin");
+  };
 
-//   bins.push(bin); //add this particular bin to bins array
-// }
-
-// });
-// // End doc ready function
+  //Grab binImg from private to be used in game.js
+  this.retrieveBin = function () {
+    return binImg;
+  };
+};

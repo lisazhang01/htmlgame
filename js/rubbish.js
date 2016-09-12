@@ -18,7 +18,7 @@ var Rubbish = function (opt) {
   } else if (typeRandomizer < 1.00) {
     rubbishImg.src = "assets/obj-sandwich.png";
   }
-
+  // Draw rubbish as it moves down page
   this.render = function (ctx) {
     y += dropRate;
     ctx.drawImage(rubbishImg, x, y, width, height);
@@ -28,9 +28,9 @@ var Rubbish = function (opt) {
     if (y + height >= canvasHeight) {
       return true;
     }
-  }
-
+  };
+  // Grabs rubbishImg from private to be used in game.js
   this.retrieveRubbish = function () {
     return rubbishImg;
-  }
+  };
 };
