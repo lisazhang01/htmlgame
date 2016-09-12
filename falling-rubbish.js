@@ -7,7 +7,7 @@ var ctx = canvas.getContext("2d");
 // newly spawned rubbishAll start at top of page
 var startLine = 0;
 
-// spawn a new rubbish every 1500ms
+// spawn a new rubbish every 1000ms
 var newRate = 1000;
 
 // set how fast the rubbishAll will fall
@@ -29,38 +29,40 @@ animate();
 function generateRandomRubbish() {
 
     // select a random pic for this new rubbish
-    var t;
-
-    if (Math.random() < 0.20) {
-        t = "red";
-    } else if (Math.random() < 0.40){
-        t = "blue";
-    } else if (Math.random() < 0.60) {
-        t = "yellow";
-    } else if (Math.random() < 0.80) {
-        t = "white";
-    } else if (Math.random() < 1.00) {
-        t = "white";
-    }
-
-    // var rubbishImg = new pic(20,20);
+    // var t;
 
     // if (Math.random() < 0.20) {
-    //     rubbishImg.src = "assets/obj-can-red.jpg";
+    //     t = "red";
     // } else if (Math.random() < 0.40){
-    //     rubbishImg.src = "assets/obj-can-red.jpg";
+    //     t = "blue";
     // } else if (Math.random() < 0.60) {
-    //     rubbishImg.src = "assets/obj-can-red.jpg";
+    //     t = "yellow";
     // } else if (Math.random() < 0.80) {
-    //     rubbishImg.src = "assets/obj-sandwich.png";
+    //     t = "white";
     // } else if (Math.random() < 1.00) {
-    //     rubbishImg.src = "assets/obj-sandwich.png";
+    //     t = "white";
     // }
+
+    var rubbishImg = new Image(10,10);
+
+    if (Math.random() < 0.20) {
+        rubbishImg.src = "assets/obj-can-red.jpg";
+    } else if (Math.random() < 0.40){
+        rubbishImg.src = "assets/obj-can-red.jpg";
+    } else if (Math.random() < 0.60) {
+        rubbishImg.src = "assets/obj-can-red.jpg";
+    } else if (Math.random() < 0.80) {
+        rubbishImg.src = "assets/obj-sandwich.png";
+    } else if (Math.random() < 1.00) {
+        rubbishImg.src = "assets/obj-sandwich.png";
+    }
+
+    document.body.appendChild(rubbishImg);
 
     // create the new rubbish
     var rubbish = {
         // set this rubbishAll pic
-        pic: t,
+        type: rubbishImg,
         // set x randomly but at least 10px off the canvas edges
         x: Math.random() * (canvas.width - 20) + 10,
         // set y to mark start
@@ -99,7 +101,6 @@ function animate() {
         ctx.rect(rubbish.x, rubbish.y, 10, 8);
         ctx.closePath();
 
-
       // var rubbishImg = new pic(20,20);
 
       // if (Math.random() < 0.20) {
@@ -118,8 +119,8 @@ function animate() {
       //   ctx.pic(rubbishImg, 10, 8);
       // };
 
-
-        ctx.fillStyle = rubbish.pic;
+        // ctx.fillStyle = rubbish.type;
+        ctx.drawImage(rubbish.type, 10, 10);
         ctx.fill();
     }
 

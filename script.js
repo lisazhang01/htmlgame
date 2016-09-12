@@ -1,20 +1,3 @@
-$(document).ready(function(){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.addEventListener("DOMContentLoaded", function(event) {
+  // init();
 });
-// End doc ready function
