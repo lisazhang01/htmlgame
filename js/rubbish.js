@@ -24,14 +24,14 @@ var Rubbish = function (opt) {
     ctx.drawImage(rubbishImg, x, y, width, height);
   };
 
-  this.collision = function (canvasHeight, collisionY, collisionXLeft, collisionXRight) {
+  this.collision = function (canvasHeight, binYStart, bin, binWidth) {
     if (y + height >= canvasHeight) {
       return true;
-    }
-    if (y + height >= collisionY && x + width >= collisionXLeft && x + width <= collisionXRight) {
+    } else if (y + height >= binYStart && x >= bin.x && x + width <= bin.x + binWidth) {
       return true;
     }
   };
+
   // Grabs rubbishImg from private to be used in game.js
   this.retrieveRubbish = function () {
     return rubbishImg;

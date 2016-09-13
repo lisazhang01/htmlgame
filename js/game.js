@@ -14,9 +14,6 @@ var Game = function (opt) {
   var binXStart        = (canvasWidth - binWidth) / 2;
   var binYStart        = canvasHeight - binHeight;
   var binMovement      = 5;
-  var collisionY       = canvasHeight - binHeight;
-  var collisionXLeft   = (canvasWidth - binWidth) / 2;
-  var collisionXRight  = (canvasWidth + binWidth) / 2;
   var rubbishHeight    = 60;
   var rubbishWidth     = 60;
   var controller       = null;
@@ -80,14 +77,14 @@ var Game = function (opt) {
 
     clearCanvas(); //clears rubbish at lastRubbishTime before drawing next frame
 
-    bin.render(ctx, controller, canvasWidth); // draws bin while linking canvas, controller function and canvasWidth which is referenced in bin.js
+    bin.render(ctx, controller, canvasWidth); // After clearCavas, draws bin while linking canvas, controller function and canvasWidth which is referenced in bin.js
 
     //Stores rubbish that has collided with the bottom of canvas
     var spritesToRemove = [];
     sprites.forEach(function(sprite, index){
       sprite.render(ctx); // each rubbish will redraw itself at every y+=
-      if (sprite.collision(canvasHeight)) {
-        spritesToRemove.push(index); // when it collides with bottom it will be pushed to the to-be-removed array
+      if (sprite.collision(canvasHeight, binYStart, bin.getPositon(), binWidth)) {
+        spritesToRemove.push(index); // when it collides with bottom or bin coordinates it will be pushed to the to-be-removed array
       }
     })
 

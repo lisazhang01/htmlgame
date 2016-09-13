@@ -4,7 +4,7 @@ var Bin = function (opt) {
   var width    = opt.width;
   var moveRate = opt.moveRate
   var x        = opt.x;
-  var y        = opt.y;
+  var y       = opt.y;
 
   binImg.src = "assets/bin-green-full.png";
 
@@ -31,4 +31,10 @@ var Bin = function (opt) {
   this.retrieveBin = function () {
     return binImg;
   };
+
+  this.getPositon = function(){
+    return { "x": x, "y": y };
+  }
+
+
 };
