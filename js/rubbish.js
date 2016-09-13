@@ -5,19 +5,52 @@ var Rubbish = function (opt) {
   var dropRate   = opt.dropRate;
   var x          = opt.x;
   var y          = 0;   // starts from top of page
+  var points     = 0;
+  var minHealth  = 0;
 
   var typeRandomizer = Math.random();
-  if (typeRandomizer < 0.20) {
-    rubbishImg.src = "assets/obj-can-red.jpg";
-  } else if (typeRandomizer < 0.40){
-    rubbishImg.src = "assets/obj-can-red.jpg";
+  if (typeRandomizer < 0.10) {
+    rubbishImg.src = "assets/obj-bottles-clear.png";
+    points = 5;
+    minHealth = 0;
+  } else if (typeRandomizer < 0.20){
+    rubbishImg.src = "assets/obj-crushedcan-brown.png";
+    points = 10;
+    minHealth = 0;
+  } else if (typeRandomizer < 0.30) {
+    rubbishImg.src = "assets/obj-duffcan.png";
+    points = 8;
+    minHealth = 0;
+  } else if (typeRandomizer < 0.40) {
+    rubbishImg.src = "assets/obj-newspaper-stack.png";
+    points = 10;
+    minHealth = 0;
+  } else if (typeRandomizer < 0.50) {
+    rubbishImg.src = "assets/obj-crushedbottle-gray.png";
+    points = 5;
+    minHealth = 0;
   } else if (typeRandomizer < 0.60) {
-    rubbishImg.src = "assets/obj-can-red.jpg";
+    rubbishImg.src = "assets/obj-bottles-grn.png";
+    points = 5;
+    minHealth = 0;
+  } else if (typeRandomizer < 0.70) {
+    rubbishImg.src = "assets/obj-eatencandybar-red.png";
+    points = 0;
+    minHealth = -5;
   } else if (typeRandomizer < 0.80) {
     rubbishImg.src = "assets/obj-sandwich.png";
+    points = 0;
+    minHealth = -10;
+  } else if (typeRandomizer < 0.90) {
+    rubbishImg.src = "assets/obj-applecore-dull.png";
+    points = 0;
+    minHealth = -10;
   } else if (typeRandomizer < 1.00) {
-    rubbishImg.src = "assets/obj-sandwich.png";
+    rubbishImg.src = "assets/obj-donut-homer.png";
+    points = 0;
+    minHealth = -15;
   }
+
   // Draw rubbish as it moves down page
   this.render = function (ctx) {
     y += dropRate;
@@ -26,9 +59,11 @@ var Rubbish = function (opt) {
 
   this.collision = function (canvasHeight, binYStart, bin, binWidth) {
     if (y + height >= canvasHeight) {
-      return true;
+      return {collided: true, points: 0, minHealth: 0};
     } else if (y + height >= binYStart && x >= bin.x && x + width <= bin.x + binWidth) {
-      return true;
+      return {collided: true, points: points, minHealth: minHealth};
+    } else {
+      return {collided: false};
     }
   };
 

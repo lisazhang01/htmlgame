@@ -6,7 +6,7 @@ var Bin = function (opt) {
   var x        = opt.x;
   var y        = opt.y;
 
-  binImg.src = "assets/bin-green-full.png";
+  binImg.src = "assets/bin-green.ico";
 
   //draw the bin at location
   this.render = function (ctx, controller, canvasWidth) {

@@ -1,5 +1,5 @@
 var Game = function (opt) {
-  //Game global variables
+  //Canvas settings
   var canvas           = opt.canvas;
   var ctx              = canvas.getContext("2d");
   // Set Canvas resolution
@@ -8,25 +8,31 @@ var Game = function (opt) {
   var canvasWidth      = canvas.width;
   var canvasHeight     = canvas.height;
   var canvasGutter     = 10;
+  //Background
   var backGd           = null;
+  //Rubbish variables
   var startLine        = 0;
+  var rubbishHeight    = canvasHeight*0.1;
+  var rubbishWidth     = rubbishHeight*0.8;
+  var sprites          = []; //holds all falling objects
+  var lastRubbishTime  = Date.now(); // save the starting time (used to calc elapsed time)
+  var rubbishDropRate  = 1; //obj moves down page at this rate
+  var newRate          = 2000; //makes new rubbish every
+  //Bin variables
   var binHeight        = canvasHeight*0.2;
   var binWidth         = binHeight*0.75;
   var binXStart        = (canvasWidth - binWidth) / 2;
   var binYStart        = canvasHeight - binHeight;
   var binMovement      = 5;
-  var rubbishHeight    = binHeight*0.5;
-  var rubbishWidth     = rubbishHeight;
-  var controller       = null;
   var bin              = null;
-  var sprites          = []; //holds all falling objects
-  var lastRubbishTime  = Date.now();   // save the starting time (used to calc elapsed time)
+  var controller       = null;
+  //Game variables
+  var gameloop         = null;
   var score            = 0;
-  var level            = 2;
+  var highScore        = 0;
+  var level            = 1;
+  var health           = 100;
 
-  //Global Changeable variables
-  var rubbishDropRate  = 1; //obj moves down page at this rate
-  var newRate          = 1000; //makes new rubbish every
 
   // Generate background
   var generateBgImg = function () {
@@ -77,6 +83,9 @@ var Game = function (opt) {
 
   //Animate function for rubbish
   var animate = function () {
+    //call animate
+    gameloop = requestAnimationFrame(animate);
+
     // get the elapsed time
     var newTime = Date.now();
     // see if its time to spawn a new rubbish
@@ -87,15 +96,19 @@ var Game = function (opt) {
 
     clearCanvas(); //clears rubbish at lastRubbishTime before drawing next frame
 
-    backGd.render(ctx, level);
+    backGd.render(ctx, level); //Draw background
+
     bin.render(ctx, controller, canvasWidth); // After clearCavas, draws bin while linking canvas, controller function and canvasWidth which is referenced in bin.js
 
     //Stores rubbish that has collided with the bottom of canvas
     var spritesToRemove = [];
     sprites.forEach(function(sprite, index){
       sprite.render(ctx); // each rubbish will redraw itself at every y+=
-      if (sprite.collision(canvasHeight, binYStart, bin.getPositon(), binWidth)) {
+      var hit = sprite.collision(canvasHeight, binYStart, bin.getPositon(), binWidth);
+      if (hit.collided) {
         spritesToRemove.push(index); // when it collides with bottom or bin coordinates it will be pushed to the to-be-removed array
+        score += hit.points;
+        health += hit.minHealth;
       }
     })
 
@@ -104,9 +117,24 @@ var Game = function (opt) {
       sprites.splice(spriteIndex, 1); //Removes it from array
     });
 
-    //call animate
-    requestAnimationFrame(animate);
+    ctx.font = "20px Times New Roman";
+    ctx.fillStyle = "black";
+    ctx.fillText("level: " + level,20,30); // Draw level
+    ctx.fillText("score: " + score,20,60); //Draw score
+    ctx.fillText("health: " + health,20,90); // Draw level
   };
+
+  var checkHealth = function (health, score, gameloop) {
+    if (health <= 80) {
+      cancelAnimationFrame(gameloop);
+      alert("Game Over. Your scored " + score + " points.");
+    } else if (health > 80 && score >= 50) {
+      level++;
+      alert("Level up, continue playing?");
+    }
+  };
+
+
 
   this.start = function () { //start command can be attach to button
     bindController();
@@ -114,5 +142,6 @@ var Game = function (opt) {
     generateBin();
     generateRandomRubbish();
     animate();
+    checkHealth();
   };
 };
