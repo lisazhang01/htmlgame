@@ -8,27 +8,37 @@ var Game = function (opt) {
   var canvasWidth      = canvas.width;
   var canvasHeight     = canvas.height;
   var canvasGutter     = 10;
+  var backGd           = null;
   var startLine        = 0;
-  var binHeight        = 120;
-  var binWidth         = 120;
+  var binHeight        = canvasHeight*0.2;
+  var binWidth         = binHeight*0.75;
   var binXStart        = (canvasWidth - binWidth) / 2;
   var binYStart        = canvasHeight - binHeight;
   var binMovement      = 5;
-  var rubbishHeight    = 60;
-  var rubbishWidth     = 60;
+  var rubbishHeight    = binHeight*0.5;
+  var rubbishWidth     = rubbishHeight;
   var controller       = null;
   var bin              = null;
   var sprites          = []; //holds all falling objects
   var lastRubbishTime  = Date.now();   // save the starting time (used to calc elapsed time)
   var score            = 0;
-  var level            = 0;
+  var level            = 2;
 
   //Global Changeable variables
   var rubbishDropRate  = 1; //obj moves down page at this rate
   var newRate          = 1000; //makes new rubbish every
 
   // Generate background
-
+  var generateBgImg = function () {
+    var newBg = new Background ({
+      height: canvasHeight,
+      width: canvasWidth,
+      gameLevel: level,
+      x: 0,
+      y: 0
+    });
+    backGd = newBg;
+  }
 
   //Generator of new rubbish
   var generateRandomRubbish = function () {
@@ -77,6 +87,7 @@ var Game = function (opt) {
 
     clearCanvas(); //clears rubbish at lastRubbishTime before drawing next frame
 
+    backGd.render(ctx, level);
     bin.render(ctx, controller, canvasWidth); // After clearCavas, draws bin while linking canvas, controller function and canvasWidth which is referenced in bin.js
 
     //Stores rubbish that has collided with the bottom of canvas
@@ -99,6 +110,7 @@ var Game = function (opt) {
 
   this.start = function () { //start command can be attach to button
     bindController();
+    generateBgImg();
     generateBin();
     generateRandomRubbish();
     animate();
