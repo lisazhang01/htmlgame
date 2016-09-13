@@ -2,27 +2,36 @@ var Game = function (opt) {
   //Game global variables
   var canvas           = opt.canvas;
   var ctx              = canvas.getContext("2d");
+  // Set Canvas resolution
+  ctx.canvas.width  = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
   var canvasWidth      = canvas.width;
   var canvasHeight     = canvas.height;
   var canvasGutter     = 10;
   var startLine        = 0;
-  var rubbishHeight    = 10;
-  var rubbishWidth     = 12;
-  var binHeight        = 30;
-  var binWidth         = 30;
+  var binHeight        = 120;
+  var binWidth         = 120;
+  var binXStart        = (canvasWidth - binWidth) / 2;
+  var binYStart        = canvasHeight - binHeight;
+  var binMovement      = 5;
+  var collisionY       = canvasHeight - binHeight;
+  var collisionXLeft   = (canvasWidth - binWidth) / 2;
+  var collisionXRight  = (canvasWidth + binWidth) / 2;
+  var rubbishHeight    = 60;
+  var rubbishWidth     = 60;
+  var controller       = null;
   var bin              = null;
   var sprites          = []; //holds all falling objects
   var lastRubbishTime  = Date.now();   // save the starting time (used to calc elapsed time)
-  //Keyboard variables for left and right arrow
-  var keyRight         = false;
-  var keyLeft          = false;
-  var binMovement      = 5;
   var score            = 0;
   var level            = 0;
 
   //Global Changeable variables
   var rubbishDropRate  = 1; //obj moves down page at this rate
   var newRate          = 1000; //makes new rubbish every
+
+  // Generate background
+
 
   //Generator of new rubbish
   var generateRandomRubbish = function () {
@@ -39,17 +48,20 @@ var Game = function (opt) {
   //Generate bin
   var generateBin = function () {
     var newBin = new Bin({
-      height: binHeight,
-      width: binWidth,
-      x: (canvasWidth - binWidth)/2,
-      y: canvasHeight - binHeight
+      height:   binHeight,
+      width:    binWidth,
+      moveRate: binMovement,
+      x:        binXStart,
+      y:        binYStart
     });
 
-    bin = newBin; //Make new bin the global bin
-    console.log("bin made");
+    bin = newBin;
   };
 
-
+  // Connects controller to document
+  var bindController = function () {
+    controller = new Controller();
+  };
 
   // clear the canvas
   var clearCanvas = function () {
@@ -66,39 +78,9 @@ var Game = function (opt) {
       lastRubbishTime = newTime;
     }
 
-    // Key up animation
-    canvas.addEventListener('keyup', function (event) {
-      var keyName = event.key;
-      switch(keyName) {
-        case "ArrowLeft":
-          keyRight = false;
-          break;
-        case "ArrowRight":
-          keyLeft = false;
-          break;
-        default:
-          break;
-      }
-      console.log("keyup");
-    });
-
-    // Key Down animation
-    canvas.addEventListener('keydown', function(event){
-      var keyName = event.key;
-      switch(keyName) {
-        case "ArrowLeft":
-            keyLeft = true;
-            break;
-        case "ArrowRight":
-            keyRight = true;
-            break;
-        default:
-            break;
-      }
-      console.log("keydown");
-  });
-
     clearCanvas(); //clears rubbish at lastRubbishTime before drawing next frame
+
+    bin.render(ctx, controller, canvasWidth); // draws bin while linking canvas, controller function and canvasWidth which is referenced in bin.js
 
     //Stores rubbish that has collided with the bottom of canvas
     var spritesToRemove = [];
@@ -119,8 +101,9 @@ var Game = function (opt) {
   };
 
   this.start = function () { //start command can be attach to button
-    generateRandomRubbish();
+    bindController();
     generateBin();
+    generateRandomRubbish();
     animate();
   };
 };

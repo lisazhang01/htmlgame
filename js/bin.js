@@ -1,27 +1,30 @@
 var Bin = function (opt) {
-  var height = opt.height;
-  var width  = opt.width;
-  var x      = opt.x;
-  var y      = opt.y;
-  var binImg = new Image();
+  var binImg   = new Image();
+  var height   = opt.height;
+  var width    = opt.width;
+  var moveRate = opt.moveRate
+  var x        = opt.x;
+  var y        = opt.y;
+
   binImg.src = "assets/bin-green-full.png";
 
-
   //draw the bin at location
-  this.render = function (ctx) {
-    if (keyRight) {
-      x += binMovement;
-    } else if (keyLeft) {
-      x -= binMovement;
+  this.render = function (ctx, controller, canvasWidth) {
+    if (controller.keyRight) {
+      x += moveRate; // right key moves x position right
+    } else if (controller.keyLeft) {
+      x -= moveRate; // left key moves x position left
     }
+
     if (x <= 0) {
-      x = 0;
+      x = 0; // keeps bin within left border of canvas
     }
-    if ((x + width) >= canvasWidth) {
-      x = canvasWidth - width;
+
+    if (x + width >= canvasWidth) {
+      x = canvasWidth - width; // keeps bin within right border of canvas
     }
-    ctx.drawImage(binImg, x, y, width, height);
-    console.log("draw bin");
+
+    ctx.drawImage(binImg, x, y, width, height); //draws bin at start point center bottom
   };
 
   //Grab binImg from private to be used in game.js

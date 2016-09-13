@@ -24,8 +24,11 @@ var Rubbish = function (opt) {
     ctx.drawImage(rubbishImg, x, y, width, height);
   };
 
-  this.collision = function (canvasHeight) {
+  this.collision = function (canvasHeight, collisionY, collisionXLeft, collisionXRight) {
     if (y + height >= canvasHeight) {
+      return true;
+    }
+    if (y + height >= collisionY && x + width >= collisionXLeft && x + width <= collisionXRight) {
       return true;
     }
   };
