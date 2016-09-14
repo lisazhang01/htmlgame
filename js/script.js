@@ -5,22 +5,13 @@ $(document).ready(function(){
     setInterval('draw()', 25);
   }
 
-
-
-
-
-
-
   // request another animation frame
   requestAnimationFrame(animate);
 });
 
-
 //Keyboard variables for left and right arrow
 var rightKey = false;
 var leftKey = false;
-
-
 
 //On keydown function
 var onKeyDown = function (event) {
@@ -41,8 +32,6 @@ var onKeyUp = function (event) {
 // Add eventlisterners to key functions
 canvas.addEventListener(onKeyDown(event));
 canvas.addEventListener(onKeyUp(event));
-
-
 
 // clear the canvas
 function clearCanvas() {

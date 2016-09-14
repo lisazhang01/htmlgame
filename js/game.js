@@ -121,9 +121,9 @@ var Game = function (opt) {
 
     ctx.font = "20px Times New Roman";
     ctx.fillStyle = "black";
-    ctx.fillText("level: " + level,20,30); // Draw level
-    ctx.fillText("score: " + score,20,60); //Draw score
-    ctx.fillText("health: " + health,20,90); // Draw level
+    ctx.fillText("Level: " + level,20,30); // Draw level
+    ctx.fillText("Score: " + score,20,60); //Draw score
+    ctx.fillText("Energy: " + health,20,90); // Draw level
 
     checkHealth(); //make sure to run this within the gameloop
   };
@@ -135,20 +135,24 @@ var Game = function (opt) {
       level = 4;
       newRate = 2100;
       alert("Level 4");
+      state = "playing";
 
     } else if (health > 0 && score >= 40) {
       level = 3;
       newRate = 1900;
       alert("Level 3");
+      state = "playing";
 
     } else if (health > 0 && score >= 20) {
       level = 2;
       newRate = 1700;
       alert("Level 2");
+      state = "playing";
 
     } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
       alert("Game Over. Your scored " + score + " points.");
+      state = "finish";
     }
 
     generateBgImg(); //Grab corresponding bg img
