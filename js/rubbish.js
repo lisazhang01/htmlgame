@@ -58,9 +58,9 @@ var Rubbish = function (opt) {
   };
 
   this.collision = function (canvasHeight, binYStart, bin, binWidth) {
-    if (y + height >= canvasHeight) {
+    if (y + height*0.5 >= canvasHeight) {
       return {collided: true, points: 0, minHealth: 0};
-    } else if (y + height >= binYStart && x >= bin.x && x + width <= bin.x + binWidth) {
+    } else if (y + height*0.5 >= binYStart && x >= bin.x && x + width <= bin.x + binWidth) {
       return {collided: true, points: points, minHealth: minHealth};
     } else {
       return {collided: false};

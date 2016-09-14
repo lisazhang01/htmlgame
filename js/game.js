@@ -17,7 +17,7 @@ var Game = function (opt) {
   var sprites          = []; //holds all falling objects
   var lastRubbishTime  = Date.now(); // save the starting time (used to calc elapsed time)
   var rubbishDropRate  = 1; //obj moves down page at this rate
-  var newRate          = 2000; //makes new rubbish every
+  var newRate          = 1500; //makes new rubbish every
   //Bin variables
   var binHeight        = canvasHeight*0.2;
   var binWidth         = binHeight*0.75;
@@ -31,7 +31,8 @@ var Game = function (opt) {
   var score            = 0;
   var highScore        = 0;
   var level            = 1;
-  var health           = 100;
+  var health           = 50;
+  var self             = this;
 
 
   // Generate background
@@ -82,9 +83,9 @@ var Game = function (opt) {
   };
 
   //Animate function for rubbish
-  var animate = function () {
+  this.animate = function () {
     //call animate
-    gameloop = requestAnimationFrame(animate);
+    gameloop = requestAnimationFrame(self.animate);
 
     // get the elapsed time
     var newTime = Date.now();
@@ -104,6 +105,7 @@ var Game = function (opt) {
     var spritesToRemove = [];
     sprites.forEach(function(sprite, index){
       sprite.render(ctx); // each rubbish will redraw itself at every y+=
+
       var hit = sprite.collision(canvasHeight, binYStart, bin.getPositon(), binWidth);
       if (hit.collided) {
         spritesToRemove.push(index); // when it collides with bottom or bin coordinates it will be pushed to the to-be-removed array
@@ -122,26 +124,38 @@ var Game = function (opt) {
     ctx.fillText("level: " + level,20,30); // Draw level
     ctx.fillText("score: " + score,20,60); //Draw score
     ctx.fillText("health: " + health,20,90); // Draw level
+
+    checkHealth(); //make sure to run this within the gameloop
   };
 
-  var checkHealth = function (health, score, gameloop) {
-    if (health <= 80) {
+  // Check if time to level up
+  var checkHealth = function () {
+
+    if (health > 0 && score >= 20) {
+      level = 2;
+      alert("Level 2");
+
+    } else if (health > 0 && score >= 40) {
+      level = 3;
+      alert("Level 3");
+
+    } else if (health > 0 && score >= 60) {
+      level = 4;
+      alert("Level 4");
+
+    } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
       alert("Game Over. Your scored " + score + " points.");
-    } else if (health > 80 && score >= 50) {
-      level++;
-      alert("Level up, continue playing?");
     }
+    generateBgImg();
+    // backGd = new Background(opt, level);
   };
-
-
 
   this.start = function () { //start command can be attach to button
     bindController();
     generateBgImg();
     generateBin();
     generateRandomRubbish();
-    animate();
-    checkHealth();
+    this.animate();
   };
 };

@@ -17,5 +17,4 @@
     this.render = function (ctx) {
       ctx.drawImage(backGdImg, x, y, width, height);
     };
-
 };
