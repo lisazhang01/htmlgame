@@ -15,7 +15,7 @@
 
 h1 {
   text-align: center;
-  margin-top: 20%;
+  margin-top: 5%;
   color: white;
   text-shadow: 1px 1px 2px #000000;
 }
@@ -24,6 +24,24 @@ h2 {
   text-align: center;
   color: white;
   text-shadow: 1px 1px 2px #000000;
+}
+
+p {
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 2px #000000;
+}
+
+.collect {
+  height: 60px;
+  width: 60px;
+  display: inline-block;
+}
+
+.avoid {
+  height: 60px;
+  width: 60px;
+  display: inline-block;
 }
 
 #canvas {

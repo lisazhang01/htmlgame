@@ -24,14 +24,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     game.start();
   })
 
-  var gameover = document.getElementById('gameover');
-
-  gameover.addEventListener('click', function() {
-    var game = new Game({canvas: document.getElementById('canvas')});
-    game.start();
-
-  })
-
 });
 
 

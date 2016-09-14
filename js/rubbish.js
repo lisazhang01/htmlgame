@@ -36,10 +36,8 @@ var Rubbish = function (opt) {
     minHealth = 0;
     missPoints = -1;
   } else if (typeRandomizer < 0.60) {
-    rubbishImg.src = "assets/obj-bottles-grn.png";
-    points = 5;
-    minHealth = 0;
-    missPoints = -1;
+    rubbishImg.src = "assets/heart.png";
+    minHealth = +5;
   } else if (typeRandomizer < 0.70) {
     rubbishImg.src = "assets/obj-eatencandybar-red.png";
     points = 0;

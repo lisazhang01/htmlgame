@@ -23,7 +23,7 @@ var Game = function (opt) {
   var binWidth         = binHeight;
   var binXStart        = (canvasWidth - binWidth) / 2;
   var binYStart        = canvasHeight - binHeight;
-  var binMovement      = 5;
+  var binMovement      = 10;
   var bin              = null;
   var controller       = null;
   //Game variables
@@ -142,12 +142,19 @@ var Game = function (opt) {
       level = 2;
       rubbishDropRate = 1.2;
       // fadeOut("Level 2");
-      // console.log("level 2");
     } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
       summary();
+  /*    restart();*/
     }
-
+/*
+    function restart() {
+      canvas.addEventListener("mouseDown", doMouseDown, false);
+    }
+    function doMouseDown(event) {
+      game.start();
+    }*/
+    // Gameover page
     function summary() {
       ctx.font = "50px Chelsea Market";
       ctx.fillStyle = "white";
@@ -162,23 +169,21 @@ var Game = function (opt) {
       ctx.fillText("Click to play again",canvasWidth/2, canvasHeight/2+200);
     };
 
-
-    function fadeOut(text) {
-      var alpha = 1.0,
-          interval = setInterval (function () {
-
-            canvas.width = canvasWidth;
-            ctx.fillStyle = "rgba(100,255,30,"+ alpha + ")";
-            ctx.font = "50px Times New Roman";
-            ctx.fillText(text, 200,150);
-            alpha = alpha - 0.05;
-            if (alpha < 0) {
-              canvas.width = canvasWidth;
-              clearInterval(interval);
-              ctx.strokeText(text, 200, 150);
-            }
-          }, 100);
-    };
+    // Level up fadeout
+    // var fadeOut = function(text) {
+    //   var alpha = 1.0,
+    //       interval = setInterval (function () {
+    //         // canvas.width = canvasWidth;
+    //         ctx.fillStyle = "rgba(100,255,30,"+ alpha + ")";
+    //         ctx.font = "50px Chelsea Market";
+    //         ctx.fillText(text, canvasWidth/2,canvasHeight/2);
+    //         alpha = alpha - 0.05;
+    //         if (alpha < 0) {
+    //           // canvas.width = canvasWidth;
+    //           clearInterval(interval);
+    //         }
+    //       }, 100);
+    // };
 
     generateBgImg(); //Grab corresponding bg img
   };
