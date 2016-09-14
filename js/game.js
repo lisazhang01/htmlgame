@@ -131,24 +131,27 @@ var Game = function (opt) {
   // Check if time to level up
   var checkHealth = function () {
 
-    if (health > 0 && score >= 20) {
-      level = 2;
-      alert("Level 2");
+    if (health > 0 && score >= 60) {
+      level = 4;
+      newRate = 2100;
+      alert("Level 4");
 
     } else if (health > 0 && score >= 40) {
       level = 3;
+      newRate = 1900;
       alert("Level 3");
 
-    } else if (health > 0 && score >= 60) {
-      level = 4;
-      alert("Level 4");
+    } else if (health > 0 && score >= 20) {
+      level = 2;
+      newRate = 1700;
+      alert("Level 2");
 
     } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
       alert("Game Over. Your scored " + score + " points.");
     }
-    generateBgImg();
-    // backGd = new Background(opt, level);
+
+    generateBgImg(); //Grab corresponding bg img
   };
 
   this.start = function () { //start command can be attach to button

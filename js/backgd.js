@@ -12,6 +12,8 @@
       backGdImg.src = "assets/bg-polluted-city2.png";
     } else if (gameLevel == 3) {
       backGdImg.src = "assets/bg-green-park.png";
+    } else if (gameLevel == 4) {
+      backGdImg.src = "assets/bg-game-beach.jpg";
     }
 
     this.render = function (ctx) {
