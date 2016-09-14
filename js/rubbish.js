@@ -7,32 +7,39 @@ var Rubbish = function (opt) {
   var y          = 0;   // starts from top of page
   var points     = 0;
   var minHealth  = 0;
+  var missPoints = 0;
 
   var typeRandomizer = Math.random();
   if (typeRandomizer < 0.10) {
     rubbishImg.src = "assets/obj-bottles-clear.png";
     points = 5;
     minHealth = 0;
+    missPoints = 1;
   } else if (typeRandomizer < 0.20){
     rubbishImg.src = "assets/obj-crushedcan-brown.png";
     points = 10;
     minHealth = 0;
+    missPoints = -1;
   } else if (typeRandomizer < 0.30) {
     rubbishImg.src = "assets/obj-duffcan.png";
     points = 8;
     minHealth = 0;
+    missPoints = -1;
   } else if (typeRandomizer < 0.40) {
     rubbishImg.src = "assets/obj-newspaper-stack.png";
     points = 10;
     minHealth = 0;
+    missPoints = -1;
   } else if (typeRandomizer < 0.50) {
     rubbishImg.src = "assets/obj-crushedbottle-gray.png";
     points = 5;
     minHealth = 0;
+    missPoints = -1;
   } else if (typeRandomizer < 0.60) {
     rubbishImg.src = "assets/obj-bottles-grn.png";
     points = 5;
     minHealth = 0;
+    missPoints = -1;
   } else if (typeRandomizer < 0.70) {
     rubbishImg.src = "assets/obj-eatencandybar-red.png";
     points = 0;
@@ -59,7 +66,7 @@ var Rubbish = function (opt) {
 
   this.collision = function (canvasHeight, binYStart, bin, binWidth) {
     if (y + height*0.5 >= canvasHeight) {
-      return {collided: true, points: 0, minHealth: 0};
+      return {collided: true, points: 0, minHealth: missPoints};
     } else if (y + height*0.5 >= binYStart && x >= bin.x && x + width <= bin.x + binWidth) {
       return {collided: true, points: points, minHealth: minHealth};
     } else {

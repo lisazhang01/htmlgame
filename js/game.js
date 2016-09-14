@@ -3,24 +3,24 @@ var Game = function (opt) {
   var canvas           = opt.canvas;
   var ctx              = canvas.getContext("2d");
   // Set Canvas resolution
-  ctx.canvas.width  = window.innerWidth;
-  ctx.canvas.height = window.innerHeight;
+  ctx.canvas.width     = window.innerWidth;
+  ctx.canvas.height    = window.innerHeight;
   var canvasWidth      = canvas.width;
   var canvasHeight     = canvas.height;
   var canvasGutter     = 10;
   //Background
   var backGd           = null;
   //Rubbish variables
-  var startLine        = 0;
+  var startLine        = -2;
   var rubbishHeight    = canvasHeight*0.1;
-  var rubbishWidth     = rubbishHeight*0.8;
+  var rubbishWidth     = rubbishHeight;
   var sprites          = []; //holds all falling objects
   var lastRubbishTime  = Date.now(); // save the starting time (used to calc elapsed time)
   var rubbishDropRate  = 1; //obj moves down page at this rate
   var newRate          = 1500; //makes new rubbish every
   //Bin variables
   var binHeight        = canvasHeight*0.2;
-  var binWidth         = binHeight*0.75;
+  var binWidth         = binHeight;
   var binXStart        = (canvasWidth - binWidth) / 2;
   var binYStart        = canvasHeight - binHeight;
   var binMovement      = 5;
@@ -29,9 +29,9 @@ var Game = function (opt) {
   //Game variables
   var gameloop         = null;
   var score            = 0;
-  var highScore        = 0;
+  var highScore        = 50;
   var level            = 1;
-  var health           = 50;
+  var health           = 20;
   var self             = this;
 
 
@@ -68,7 +68,6 @@ var Game = function (opt) {
       x:        binXStart,
       y:        binYStart
     });
-
     bin = newBin;
   };
 
@@ -119,8 +118,8 @@ var Game = function (opt) {
       sprites.splice(spriteIndex, 1); //Removes it from array
     });
 
-    ctx.font = "20px Times New Roman";
-    ctx.fillStyle = "black";
+    ctx.font = "30px Chelsea Market";
+    ctx.fillStyle = "white";
     ctx.fillText("Level: " + level,20,30); // Draw level
     ctx.fillText("Score: " + score,20,60); //Draw score
     ctx.fillText("Energy: " + health,20,90); // Draw level
@@ -133,27 +132,53 @@ var Game = function (opt) {
 
     if (health > 0 && score >= 60) {
       level = 4;
-      newRate = 2100;
-      alert("Level 4");
-      state = "playing";
-
+      rubbishDropRate = 2;
+      // fadeOut("Level 4");
     } else if (health > 0 && score >= 40) {
       level = 3;
-      newRate = 1900;
-      alert("Level 3");
-      state = "playing";
-
+      rubbishDropRate = 1.5;
+      // fadeOut("Level 3");
     } else if (health > 0 && score >= 20) {
       level = 2;
-      newRate = 1700;
-      alert("Level 2");
-      state = "playing";
-
+      rubbishDropRate = 1.2;
+      // fadeOut("Level 2");
+      // console.log("level 2");
     } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
-      alert("Game Over. Your scored " + score + " points.");
-      state = "finish";
+      summary();
     }
+
+    function summary() {
+      ctx.font = "50px Chelsea Market";
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.fillText("Game Over", canvasWidth/2, canvasHeight/2-60);
+      ctx.fillText("Score = " + score,canvasWidth/2,canvasHeight/2); // Draw level
+      var currentScore = score;
+        if (currentScore > highScore) {
+          highScore = currentScore;
+        }
+      ctx.fillText("High score = " + highScore, canvasWidth/2, canvasHeight/2+60);
+      ctx.fillText("Click to play again",canvasWidth/2, canvasHeight/2+200);
+    };
+
+
+    function fadeOut(text) {
+      var alpha = 1.0,
+          interval = setInterval (function () {
+
+            canvas.width = canvasWidth;
+            ctx.fillStyle = "rgba(100,255,30,"+ alpha + ")";
+            ctx.font = "50px Times New Roman";
+            ctx.fillText(text, 200,150);
+            alpha = alpha - 0.05;
+            if (alpha < 0) {
+              canvas.width = canvasWidth;
+              clearInterval(interval);
+              ctx.strokeText(text, 200, 150);
+            }
+          }, 100);
+    };
 
     generateBgImg(); //Grab corresponding bg img
   };
