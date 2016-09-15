@@ -10,26 +10,26 @@
 /*  border: 1px solid black;*/
   text-align: center;
   font-family: 'Chelsea Market', cursive;
-  font-size: 2em;
+  font-size: 1.7em;
 }
 
 h1 {
   text-align: center;
-  margin-top: 5%;
+  margin-top: 4%;
   color: white;
-  text-shadow: 1px 1px 2px #000000;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 h2 {
   text-align: center;
   color: white;
-  text-shadow: 1px 1px 2px #000000;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 p {
   text-align: center;
   color: white;
-  text-shadow: 1px 1px 2px #000000;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 .collect {
@@ -41,6 +41,11 @@ p {
 .avoid {
   height: 60px;
   width: 60px;
+  display: inline-block;
+}
+.key {
+  height: 40px;
+  width: 40px;
   display: inline-block;
 }
 
@@ -63,9 +68,4 @@ p {
   display: none;
 }
 
-/*@media(max-width: 1200px) {
-  #canvas {
-    width: 90%;
-    height: auto;
-  }
-}*/
+

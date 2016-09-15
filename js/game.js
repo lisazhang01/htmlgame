@@ -29,10 +29,13 @@ var Game = function (opt) {
   //Game variables
   var gameloop         = null;
   var score            = 0;
-  var highScore        = 50;
+  var highScore        = 120;
   var level            = 1;
-  var health           = 20;
+  var health           = 50;
   var self             = this;
+  var message          = "Level 1";
+  var alpha            = 1.0;
+  var alphaSpeed       = 0.02;
 
 
   // Generate background
@@ -118,79 +121,110 @@ var Game = function (opt) {
       sprites.splice(spriteIndex, 1); //Removes it from array
     });
 
-    ctx.font = "30px Chelsea Market";
+    if (message) {
+      ctx.fillStyle = "rgba(100,255,30,"+ alpha + ")";
+      ctx.font      = "50px Chelsea Market";
+      ctx.textAlign = "center";
+      ctx.fillText(message, canvasWidth/2,canvasHeight/2);
+      alpha         = alpha - 0.01;
+
+      if (alpha <= 0) {
+        message = ""
+        alpha   = 1.0;
+      }
+    }
+
+    ctx.font      = "30px Chelsea Market";
     ctx.fillStyle = "white";
-    ctx.fillText("Level: " + level,20,30); // Draw level
-    ctx.fillText("Score: " + score,20,60); //Draw score
-    ctx.fillText("Energy: " + health,20,90); // Draw level
+    ctx.fillText("Level: " + level,100,40); // Draw level
+    ctx.fillText("Score: " + score,100,80); //Draw score
+    ctx.fillText("Energy: " + health,100,120); // Draw level
 
     checkHealth(); //make sure to run this within the gameloop
   };
 
-  // Check if time to level up
-  var checkHealth = function () {
+  var doRestart = function () {
+    self.restart();
+  };
 
-    if (health > 0 && score >= 60) {
+  var bindRestart = function () {
+    $(canvas).one("mousedown", doRestart); //need jquery to make sure it only is able to detect first mousedown
+  };
+
+  // Gameover page
+  var summary = function () {
+    ctx.font = "50px Chelsea Market";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.fillText("Game Over", canvasWidth/2, canvasHeight/2-60);
+    ctx.fillText("Score = " + score,canvasWidth/2,canvasHeight/2); // Draw level
+    var currentScore = score;
+      if (currentScore > highScore) {
+        highScore = currentScore;
+      }
+    ctx.fillText("High score = " + highScore, canvasWidth/2, canvasHeight/2+60);
+    ctx.fillText("Click to play again",canvasWidth/2, canvasHeight/2+200);
+  };
+
+  // Level up fadeout
+  // var fadeOut = function(text) {
+  //   messageAlpha = 1.0;
+  //   message      = text;
+  // };
+  // Check level up
+  var checkHealth = function() {
+    if (health > 0 && score > 60) {
+      rubbishDropRate = 2; //(0.1 * (Math.sqrt(level))) + (-0.2 * level) + 1.2;
       level = 4;
-      rubbishDropRate = 2;
       // fadeOut("Level 4");
-    } else if (health > 0 && score >= 40) {
+    } else if (health > 0 && score >40 && score < 61) {
+      rubbishDropRate = 1.5; //(0.1 * (Math.sqrt(level))) + (-0.2 * level) + 1.2;
       level = 3;
-      rubbishDropRate = 1.5;
-      // fadeOut("Level 3");
-    } else if (health > 0 && score >= 20) {
+    } else if (health > 0 && score >19 && score < 41) {
+      rubbishDropRate = 1.2; //(0.1 * (Math.sqrt(level))) + (-0.2 * level) + 1.2;
       level = 2;
-      rubbishDropRate = 1.2;
-      // fadeOut("Level 2");
     } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
       summary();
-  /*    restart();*/
+      bindRestart();
     }
-/*
-    function restart() {
-      canvas.addEventListener("mouseDown", doMouseDown, false);
-    }
-    function doMouseDown(event) {
-      game.start();
-    }*/
-    // Gameover page
-    function summary() {
-      ctx.font = "50px Chelsea Market";
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText("Game Over", canvasWidth/2, canvasHeight/2-60);
-      ctx.fillText("Score = " + score,canvasWidth/2,canvasHeight/2); // Draw level
-      var currentScore = score;
-        if (currentScore > highScore) {
-          highScore = currentScore;
-        }
-      ctx.fillText("High score = " + highScore, canvasWidth/2, canvasHeight/2+60);
-      ctx.fillText("Click to play again",canvasWidth/2, canvasHeight/2+200);
-    };
+    generateBgImg();
+  }
 
-    // Level up fadeout
-    // var fadeOut = function(text) {
-    //   var alpha = 1.0,
-    //       interval = setInterval (function () {
-    //         // canvas.width = canvasWidth;
-    //         ctx.fillStyle = "rgba(100,255,30,"+ alpha + ")";
-    //         ctx.font = "50px Chelsea Market";
-    //         ctx.fillText(text, canvasWidth/2,canvasHeight/2);
-    //         alpha = alpha - 0.05;
-    //         if (alpha < 0) {
-    //           // canvas.width = canvasWidth;
-    //           clearInterval(interval);
-    //         }
-    //       }, 100);
-    // };
+  // var checkHealth = function () {
+  //   if (level == 4 && score  60) {
+  //     level = 4;
 
-    generateBgImg(); //Grab corresponding bg img
+  //     fadeOut("Level 4");
+  //   } else if (level != 3 && health > 0 && score >= 40) {
+  //     level = 3;
+
+  //     fadeOut("Level 3");
+  //   } else if (level != 2 && health > 0 && score >= 20) {
+  //     level = 2;
+
+  //     fadeOut("Level 2");
+
+  //   }
+
+  // };
+
+
+
+  this.restart = function () {
+    health           = 100;
+    sprites          = [];
+    level            = 1;
+    score            = 0;
+    backGd           = null;
+    lastRubbishTime  = Date.now();
+    generateRandomRubbish();
+    this.animate();
   };
 
   this.start = function () { //start command can be attach to button
     bindController();
-    generateBgImg();
+    generateBgImg(level);
     generateBin();
     generateRandomRubbish();
     this.animate();
