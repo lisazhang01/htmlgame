@@ -32,6 +32,7 @@ var Bin = function (opt) {
     return binImg;
   };
 
+  // Gets bin's current position to reference for collission detection
   this.getPositon = function(){
     return { "x": x, "y": y };
   }

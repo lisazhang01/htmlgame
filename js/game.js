@@ -114,12 +114,13 @@ var Game = function (opt) {
         health += hit.minHealth;
       }
     })
-
+    // Removes used up sprites from ToRemove array
     spritesToRemove.forEach(function (spriteIndex){
       sprites[spriteIndex].retrieveRubbish().remove(); //returns the img of the rubbish
       sprites.splice(spriteIndex, 1); //Removes it from array
     });
 
+    // Fadeout message properties
     if (message) {
       ctx.fillStyle = "rgba(100,255,30,"+ alpha + ")";
       ctx.font      = "50px Chelsea Market";
@@ -133,6 +134,7 @@ var Game = function (opt) {
       }
     }
 
+    // Draws Level, Score and Energy on top left of page
     ctx.font      = "30px Chelsea Market";
     ctx.fillStyle = "white";
     ctx.fillText("Level: " + level,100,40); // Draw level
@@ -142,10 +144,10 @@ var Game = function (opt) {
     checkHealth(); //make sure to run this within the gameloop
   };
 
+  // Restarts game at game over click
   var doRestart = function () {
     self.restart();
   };
-
   var bindRestart = function () {
     $(canvas).one("mousedown", doRestart); //need jquery to make sure it only is able to detect first mousedown
   };
@@ -166,10 +168,10 @@ var Game = function (opt) {
   };
 
   // Level up fadeout
-  var fadeOut = function(text) {
-    messageAlpha = 1.0;
-    message      = text;
-  };
+  // var fadeOut = function(text) {
+  //   messageAlpha = 1.0;
+  //   message      = text;
+  // };
   // Check level up
   var checkHealth = function() {
     if (health > 0 && score > 60) {
@@ -189,10 +191,11 @@ var Game = function (opt) {
       summary();
       bindRestart();
     }
-    generateBgImg();
+    generateBgImg(); //Changes bg img for each level
   }
-
+  // background sounds
   var bgSound   = new Audio("sound/park-bench-atmosphere.wav");
+  bgSound.loop = true;
 
 // Restart function at gameover to reset counters
   this.restart = function () {
@@ -200,12 +203,12 @@ var Game = function (opt) {
     sprites          = [];
     level            = 1;
     score            = 0;
-    backGd           = null;
     lastRubbishTime  = Date.now();
     generateRandomRubbish();
     this.animate();
   };
 
+// Kicks off game functions at beginning of game after menu page
   this.start = function () { //start command can be attach to button
     bgSound.play();
     bindController();

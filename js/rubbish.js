@@ -1,3 +1,4 @@
+// Rubbish generator funtion
 var Rubbish = function (opt) {
   var rubbishImg = new Image();
   var height     = opt.height;
@@ -5,11 +6,12 @@ var Rubbish = function (opt) {
   var dropRate   = opt.dropRate;
   var x          = opt.x;
   var y          = 0;   // starts from top of page
-  var points     = 0;
-  var minHealth  = 0;
-  var missPoints = 0;
-  var hitSound   = new Audio();
+  var points     = 0; //points for each obj recycled
+  var minHealth  = 0; //Stores bad health points
+  var missPoints = 0; //Neg points for missed objs
+  var hitSound   = new Audio(); //Collision sounds
 
+  //Randomly generate a different type of sprite
   var typeRandomizer = Math.random();
   if (typeRandomizer < 0.10) {
     rubbishImg.src = "assets/obj-bottles-clear.png";
@@ -28,7 +30,7 @@ var Rubbish = function (opt) {
     points = 8;
     minHealth = 0;
     missPoints = -1;
-    hitSound.src = "sound/plastic-crunch.wav";
+    hitSound.src = "sound/burp.wav";
   } else if (typeRandomizer < 0.40) {
     rubbishImg.src = "assets/obj-newspaper-stack.png";
     points = 10;
@@ -73,11 +75,12 @@ var Rubbish = function (opt) {
     ctx.drawImage(rubbishImg, x, y, width, height);
   };
 
+  //Detects collision with floor and also the bin
   this.collision = function (canvasHeight, binYStart, bin, binWidth) {
     if (y + height*0.5 >= canvasHeight) {
       return {collided: true, points: 0, minHealth: missPoints};
     } else if (y + height*0.5 >= binYStart && x >= bin.x && x + width <= bin.x + binWidth) {
-      hitSound.play();
+      hitSound.play(); // Play sound effect
       return {collided: true, points: points, minHealth: minHealth};
     } else {
       return {collided: false};
