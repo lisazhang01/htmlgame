@@ -11,8 +11,8 @@ var Rubbish = function (opt) {
   var missPoints = 0; //Neg points for missed objs
   var hitSound   = new Audio(); //Collision sounds
 
-  //Randomly generate a different type of sprite
-  var typeRandomizer = Math.random();
+//Randomly generate a different type of sprite
+var typeRandomizer = Math.random();
   if (typeRandomizer < 0.10) {
     rubbishImg.src = "assets/obj-bottles-clear.png";
     points = 5;
@@ -69,13 +69,13 @@ var Rubbish = function (opt) {
     hitSound.src = "sound/splat.wav";
   }
 
-  // Draw rubbish as it moves down page
+// Draw rubbish as it moves down page
   this.render = function (ctx) {
     y += dropRate;
     ctx.drawImage(rubbishImg, x, y, width, height);
   };
 
-  //Detects collision with floor and also the bin
+//Detects collision with floor and also the bin
   this.collision = function (canvasHeight, binYStart, bin, binWidth) {
     if (y + height*0.5 >= canvasHeight) {
       return {collided: true, points: 0, minHealth: missPoints};
@@ -87,7 +87,7 @@ var Rubbish = function (opt) {
     }
   };
 
-  // Grabs rubbishImg from private to be used in game.js
+// Grabs rubbishImg from private to be used in game.js
   this.retrieveRubbish = function () {
     return rubbishImg;
   };
