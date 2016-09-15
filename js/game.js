@@ -37,7 +37,6 @@ var Game = function (opt) {
   var alpha            = 1.0;
   var alphaSpeed       = 0.02;
 
-
   // Generate background
   var generateBgImg = function () {
     var newBg = new Background ({
@@ -167,10 +166,10 @@ var Game = function (opt) {
   };
 
   // Level up fadeout
-  // var fadeOut = function(text) {
-  //   messageAlpha = 1.0;
-  //   message      = text;
-  // };
+  var fadeOut = function(text) {
+    messageAlpha = 1.0;
+    message      = text;
+  };
   // Check level up
   var checkHealth = function() {
     if (health > 0 && score > 60) {
@@ -180,9 +179,11 @@ var Game = function (opt) {
     } else if (health > 0 && score >40 && score < 61) {
       rubbishDropRate = 1.5; //(0.1 * (Math.sqrt(level))) + (-0.2 * level) + 1.2;
       level = 3;
+      // fadeOut("Level 3");
     } else if (health > 0 && score >19 && score < 41) {
       rubbishDropRate = 1.2; //(0.1 * (Math.sqrt(level))) + (-0.2 * level) + 1.2;
       level = 2;
+      // fadeOut("Level 2");
     } else if (health <= 0) {
       cancelAnimationFrame(gameloop);
       summary();
@@ -191,26 +192,9 @@ var Game = function (opt) {
     generateBgImg();
   }
 
-  // var checkHealth = function () {
-  //   if (level == 4 && score  60) {
-  //     level = 4;
+  var bgSound   = new Audio("sound/park-bench-atmosphere.wav");
 
-  //     fadeOut("Level 4");
-  //   } else if (level != 3 && health > 0 && score >= 40) {
-  //     level = 3;
-
-  //     fadeOut("Level 3");
-  //   } else if (level != 2 && health > 0 && score >= 20) {
-  //     level = 2;
-
-  //     fadeOut("Level 2");
-
-  //   }
-
-  // };
-
-
-
+// Restart function at gameover to reset counters
   this.restart = function () {
     health           = 100;
     sprites          = [];
@@ -223,6 +207,7 @@ var Game = function (opt) {
   };
 
   this.start = function () { //start command can be attach to button
+    bgSound.play();
     bindController();
     generateBgImg(level);
     generateBin();
